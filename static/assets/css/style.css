@@ -1308,3 +1308,68 @@ section {
     align-items: stretch;
     width: 100%;
 }
+body {
+  min-height: 100vh;
+  margin: 0;
+}
+
+header {
+  min-height: 50px;
+}
+
+footer {
+  min-height: 50px;
+}
+
+.portfolio-container {
+  height: auto !important;
+}
+
+#login {
+  width: 100%;
+  height: 100vh;
+  background: url("../img/login.jpg") top right;
+  background-size: cover;
+}
+#signup {
+  width: 100%;
+  height: 100vh;
+  background: url("../img/signup.jpg") top right;
+  background-size: cover;
+}
+#addbook {
+  width: 100%;
+  height: 100vh;
+  background: url("../img/addbook.jpg") top right;
+  background-size: cover;
+}
+
+#addbook h1 {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  color: #e5f0f2;
+}
+#login h1 {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  color: #e5f0f2;
+}
+#signup h1 {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  color: #e5f0f2;
+}
+
+section {
+  min-height: 100vh;
+}
+
+
+/* The article fills all the space between header & footer */
+
