@@ -81,9 +81,12 @@ def mylib():
                     rbooks.append(rbook)
 
                 def days_between(d1, d2):
-                    d1 = datetime.strptime(d1, "%Y-%m-%d")
-                    d2 = datetime.strptime(d2, "%Y-%m-%d")
-                    return abs((d2 - d1).days)
+                    try:
+                        d1 = datetime.strptime(d1, "%Y-%m-%d")
+                        d2 = datetime.strptime(d2, "%Y-%m-%d")
+                        return abs((d2 - d1).days)
+                    except ValueError:
+                        return "Invalid date"
                 app.jinja_env.globals.update(days_between=days_between)
                 return render_template("mybooks.html", books=rbooks , days_between=days_between, user=request.cookies.get("sessioncookie"))
             else:
@@ -211,7 +214,7 @@ def savebook():
             try:
                 c.execute(f"INSERT INTO addedbooks (user_id, book_title, book_authors, book_subtitle, book_publisher, book_publishdate, book_thumbnail, book_description, rating, started_reading, ended_reading) VALUES (\"{request.cookies.get('sessioncookie')}\", \"{title}\", \"{authors}\",\"{subtitle}\",\"{publisher}\",\"{publishDate}\",\"{thumbnail}\",\"{description}\",\"{rating}\",\"{start_date}\",\"{end_date}\")")
             except:
-                return "<h1>Something definetly went wrong.</h1>\n<p>It could be because of these reasons:</p>\n<ul>\n<li>The book has data we could not process</li>\n<li>You have already added this book to your library</li>\n</ul>\n<h2>Sorry for the inconvenience</h2>\n<a href='/search'>Go Back</a>"
+                return "<h1>Something definetly went wrong.</h1>\n<p>It could be because of these reasons:</p>\n<ul>\n<li>The book has data we could not process</li>\n<li>You have already added this book to your library</li>\n<li>You forgot to enter something</li>\n</ul>\n<h2>Sorry for the inconvenience</h2>\n<a href='/search'>Go Back</a>"
             c.close()
         return redirect(url_for('mylib'))
     
