@@ -75,7 +75,7 @@
           {% for book in books %}
             <div class="modal fade" id="Modal{{book.id}}" data-aos="fade-up" tabindex="-1">
               <div class="modal-dialog">
-                <form action="{{url_for('addbook')}}" method="post">
+                <form method="post">
                 <div class="modal-content">
                   <div class="modal-body">
                       <img src="{{book.thumbnail}}" class="card-img-top mb-3" alt="...">
@@ -101,7 +101,8 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="detailsbutton">Add to library</button>
+                    <button type="submit" formaction="{{url_for('addbook')}}" class="btn btn-primary" id="detailsbutton">Add as record</button>
+                    <button type="submit" formaction="{{url_for('startreading')}}" class="btn btn-primary" id="detailsbutton">Start Reading</button>
                   </div>
                 </div>
               </form>

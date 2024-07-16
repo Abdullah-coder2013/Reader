@@ -55,15 +55,29 @@
         <div class="row portfolio-container" style="height: auto !important;" data-aos="fade-up" data-aos-delay="200">
           {% if books != [] %}
             {% for book in books %}
-            <div class="card p-3 m-3" style="width: 18rem;">
-              <img src="{{book.thumbnail}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title"><strong>{{book.title}}</strong></h5>
-                <br>
-                <p class="card-text">{{book.authors}}</p>
-                <a href="#" class="btn btn-primary" id="detailsbutton" data-bs-toggle="modal" data-bs-target="#Modal{{book.id}}">View Details</a>
-                
-              </div>
+              {% if book.end_date != "None" %}
+                <div class="card p-3 m-3" style="width: 18rem;">
+                  <img src="{{book.thumbnail}}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title"><strong>{{book.title}}</strong></h5>
+                    <br>
+                    <p class="card-text">{{book.authors}}</p>
+                    <a href="#" class="btn btn-primary" id="detailsbutton" data-bs-toggle="modal" data-bs-target="#Modal{{book.id}}">View Details</a>
+                    
+                  </div>
+                {% else %}
+                <div class="card p-3 m-3" style="width: 18rem;">
+                  <img src="{{book.thumbnail}}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title"><strong>{{book.title}}</strong></h5>
+                    <br>
+                    <p class="card-text">{{book.authors}}</p><br>
+                    <p class="card-text">Reading in progress...</p>
+                    <a href="#" class="btn btn-primary" id="detailsbutton" data-bs-toggle="modal" data-bs-target="#Modal{{book.id}}">View Details</a>
+                    
+                  </div>
+                {% endif %}
+                  
             </div>
             
             {% endfor %}
@@ -71,10 +85,57 @@
             <p>No books found</p>
           {% endif %}
           {% for book in books %}
+            {% if book.end_date != "None" %}
+              <div class="modal fade" id="Modal{{book.id}}" data-aos="fade-up" tabindex="-1">
+                <div class="modal-dialog">
+                
+                  <form action="{{url_for('mylib')}}" method="post">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                          <img src="{{book.thumbnail}}" class="card-img-top mb-3" alt="...">
+                          <input type="hidden" name="thumbnail" value="{{book.thumbnail}}">
+                          <h4 id="booktitle"><strong>{{book.title}}</strong></h4>
+                          <input type="hidden" name="title" value="{{book.title}}">
+                          <input type="hidden" name="id" value="{{book.id}}">
+                          <br>
+                          <h5>Further Details</h5>
+                          <ul>
+                            <li id="booksubtitle"><strong>Subtitle:</strong> {{book.subtitle}}</li>
+                            <input type="hidden" name="subtitle" value="{{book.subtitle}}">
+                            <li id="bookpublisher"><strong>Publisher:</strong> {{book.publisher}}</li>
+                            <input type="hidden" name="publisher" value="{{book.publisher}}">
+                            <li id="bookauthors"><strong>Authors:</strong> {{book.authors}}</li>
+                            <input type="hidden" name="authors" value="{{book.authors}}">
+                            <li id="bookpublishdate"><strong>Publish Date:</strong> {{book.publishdate}}</li>
+                            <input type="hidden" name="publishdate" value="{{book.publishdate}}">
+                            <li id="bookdescription"><strong>Description:</strong> {{book.description}}</li>
+                            <input type="hidden" name="description" value="{{book.description}}">
+                            <li id="rating"><strong>Rating:</strong> {{book.rating}} Stars</li>
+                            <input type="hidden" name="rating" value="{{book.rating}}">
+
+                          <li id="start_date"><strong>Started Reading:</strong> {{book.start_date}}</li>
+                          <input type="hidden" name="start_date" value="{{book.start_date}}">
+
+                          <li id="end_date"><strong>Finished Reading:</strong> {{book.end_date}}</li>
+                          <input type="hidden" name="end_date" value="{{book.end_date}}">                          
+                            
+                      
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" formaction="{{url_for('edit')}}" class="btn btn-warning">Edit</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                      </div>
+                    </div>
+                  </form>
+                    
+                </div>
+              </div>
+            {% else %}
             <div class="modal fade" id="Modal{{book.id}}" data-aos="fade-up" tabindex="-1">
               <div class="modal-dialog">
               
-                <form action="{{url_for('mylib')}}" method="post">
+                <form method="post">
                   <div class="modal-content">
                     <div class="modal-body">
                         <img src="{{book.thumbnail}}" class="card-img-top mb-3" alt="...">
@@ -95,27 +156,29 @@
                           <input type="hidden" name="publishdate" value="{{book.publishdate}}">
                           <li id="bookdescription"><strong>Description:</strong> {{book.description}}</li>
                           <input type="hidden" name="description" value="{{book.description}}">
-                          <li id="rating"><strong>Rating:</strong> {{book.rating}} Stars</li>
-                          <input type="hidden" name="description" value="{{book.rating}}">
+                          <li id="rating"><strong>Rating:</strong> <em>Not Rated yet</em></li>
+                          <input type="hidden" name="rating" value="{{book.rating}}">
 
                         <li id="start_date"><strong>Started Reading:</strong> {{book.start_date}}</li>
-                        <input type="hidden" name="description" value="{{book.start_date}}">
+                        <input type="hidden" name="start_date" value="{{book.start_date}}">
 
-                        <li id="end_date"><strong>Finished Reading:</strong> {{book.end_date}}</li>
-                        <input type="hidden" name="description" value="{{book.end_date}}">
-                        <li><strong>Days Needed to read:</strong> {{days_between(book.start_date, book.end_date)}}</li>
+                        <li id="end_date"><strong>Finished Reading:</strong> Haven't finished book yet.</li>
+                        <input type="hidden" name="end_date" value="{{book.end_date}}">
                         </ul>
                     
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-danger">Delete</button>
+                      <button type="submit" formaction="{{url_for('edit')}}" class="btn btn-warning">Edit</button>
+                      <button type="submit" formaction="{{url_for('finishbook')}}" class="btn btn-primary">Finish</button>
+                      <button type="submit" formaction="{{url_for('mylib')}}" class="btn btn-danger">Delete</button>
                     </div>
                   </div>
                 </form>
                   
               </div>
             </div>
+            {% endif %}
           {% endfor %}
 
         </div>
